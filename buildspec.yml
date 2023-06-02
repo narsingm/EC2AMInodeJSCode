@@ -1,0 +1,25 @@
+version: 0.2
+phases:
+  install:
+    runtine-version: 
+       nodejs: 18
+    commands:
+      - echo Getting Started
+  pre_build: 
+    commands:
+      - echo Installing some packages and source NPM dependecies...
+      - npm install -g json
+      - chomd +x ./build_scripts/create_configration.sh
+      - sh ./build_scripts/create_configration.sh
+      - npm install
+      - aws --version
+  build: 
+    commands:
+       - echo Build started on `date`
+       - echo Run all you build releated code if any
+       - echo Build finished, now moving to S3
+  post_build:
+    commands: 
+      - echo Build completed on `date`
+      - aws deploy push --application-name codedeploy-apps --s3-location s3://aws-code-deploy-demo-s3/codedeploydemo/app.zip --ignore-hidden-files --region us-east-1
+        
